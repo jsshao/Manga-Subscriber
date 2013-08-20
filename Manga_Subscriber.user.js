@@ -1,6 +1,6 @@
 // ==UserScript==
-// @name        Manga Reader Plus
-// @namespace   Manga Reader Plus
+// @name        Manga Subscriber 
+// @namespace   Manga Subscriber 
 // @description Allows manga subscription and shows subscribed updates in home page
 // @include     http://www.mangareader.net/*
 // @grant 	none
