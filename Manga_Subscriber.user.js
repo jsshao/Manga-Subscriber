@@ -54,15 +54,15 @@ function initMangaPage()
 	/* Unsubscribe to the manga */
 	function unsubscribeManga(manga)
 	{
-        	/* Fetch array of subscribed mangas */
-        	var subscribedMangas = JSON.parse(localStorage.getItem("subscribedMangas"));
+        /* Fetch array of subscribed mangas */
+        var subscribedMangas = JSON.parse(localStorage.getItem("subscribedMangas"));
 
-        	/* Remove current manga from array */
-        	subscribedMangas.splice(subscribedMangas.indexOf(manga), 1);
+        /* Remove current manga from array */
+        subscribedMangas.splice(subscribedMangas.indexOf(manga), 1);
 
-        	/* Put the new array of subscribed mangas into local storage */
-        	localStorage.setItem("subscribedMangas", JSON.stringify(subscribedMangas));
-	        location.reload();
+        /* Put the new array of subscribed mangas into local storage */
+        localStorage.setItem("subscribedMangas", JSON.stringify(subscribedMangas));
+	    location.reload();
 	}
 	
 	/* Subscribe to the manga */
@@ -103,13 +103,22 @@ function initMangaPage()
 			return true;
 		}
 	}
+
+    /* Cross out manga chapters that have already been read */
+    var list = document.getElementById("listing");
+    var chapters = list.getElementsByTagName("tr");
+    var chaptersRead = JSON.parse(localStorage.getItem(title.innerHTML.replace(" Manga", "")));
+    for (var i = 0; i < chaptersRead.length; i++) {
+        var originalText = chapters[parseInt(chaptersRead[i])].children[0].innerHTML;
+        chapters[parseInt(chaptersRead[i])].children[0].innerHTML = "<del>" + originalText + "</del>";
+    } 
 }
 
 /* Mark manga chapter as read */
 function markChapterRead()
 {
 	/* Get the division which holds all the lastest updates */
-        var mangaChapter = document.getElementById("mangainfo");
+    var mangaChapter = document.getElementById("mangainfo");
 
 	/* If the element cannot be found, the current page is not a chapter */
 	if (null == mangaChapter) {
@@ -124,21 +133,21 @@ function markChapterRead()
 	var mangaName = mangaChapter.substring(0, mangaChapter.lastIndexOf(" "));
 	var chapterNumber = mangaChapter.substring(mangaChapter.lastIndexOf(" ") + 1, mangaChapter.length);
 
-        /* Fetch array of read chapters */
-        var chaptersRead = JSON.parse(localStorage.getItem(mangaName));
+    /* Fetch array of read chapters */
+    var chaptersRead = JSON.parse(localStorage.getItem(mangaName));
 
 	/* If no chapters have been read, create new array */
-        if (null == chaptersRead) {
-        	chaptersRead = new Array();
-        }
+    if (null == chaptersRead) {
+     	chaptersRead = new Array();
+    }
 
 	/* Mark chapter as read unless it's already done so */
-	if (-1 == chaptersRead.indexOf(mangaName)) {
-	        /* Add new chapter to the list of read chapters */
-       		chaptersRead.push(chapterNumber);
+	if (-1 == chaptersRead.indexOf(chapterNumber)) {
+	    /* Add new chapter to the list of read chapters */
+       	chaptersRead.push(chapterNumber);
         	
 		/* Set the new array of read chapters for this manga into local storage */
-        	localStorage.setItem(mangaName, JSON.stringify(chaptersRead));
+        localStorage.setItem(mangaName, JSON.stringify(chaptersRead));
 	}
 }
 
