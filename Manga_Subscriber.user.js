@@ -170,10 +170,53 @@ function initHomePage()
 	/* Create new header that will contain recent updates of manga subscriptions */
 	var subscribedUpdates = document.createElement("h3");
 	subscribedUpdates.innerHTML = "Subscribed Updates";
+    var table = document.createElement("table");
+    table.className += " updates";
 
 	/* Show subscribed updates at top of the page */
-	updates.insertBefore(subscribedUpdates, firstHeader);
+    updates.insertBefore(table, firstHeader);
+	updates.insertBefore(subscribedUpdates, table);
+ 
+    /* Declarations */
+    var parser = new DOMParser();
+    var subscribedMangas = JSON.parse(localStorage.getItem("subscribedMangas"));
+    var xmlhttp;
+    var latestUpdates;
+    var chapters;   
+ 
+    if (window.XMLHttpRequest) {
+        /* For IE7+, Firefox, Chrome, Opera, Safari */
+        xmlhttp=new XMLHttpRequest();
+    } else { 
+        /* For code for IE6, IE5 */
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    /* HTTP request to mangareader.net/latest for a list of latest mangas and display subscribed updates */
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status==200) {
+            
+            /* Get list of chapters */
+            latestUpdates = parser.parseFromString(xmlhttp.responseText, "text/html");
+            chapters = latestUpdates.getElementsByClassName("updates")[0].getElementsByTagName("tr");
+     
+            /* Display subscribed and updated chapters */
+            for (var i = 0; i < chapters.length; i++) {
+                if (-1 != subscribedMangas.indexOf(chapters[i].getElementsByTagName("strong")[0].innerHTML)) {
+                    alert(chapters[i].innerHTML);
+                    table.innerHTML += "<tr class\"c3\">" + chapters[i].innerHTML + "</tr>";
+                }
+            }            
+
+            /* Formatting issues for front page */
+            table.innerHTML = table.innerHTML.replace("class=\"c1\"", "class=\"c2\"");
+        }
+    }
+    xmlhttp.open("GET", "http://www.mangareader.net/latest/", true );
+    xmlhttp.send();    
 }
+
+
 
 initMangaPage();
 markChapterRead();
