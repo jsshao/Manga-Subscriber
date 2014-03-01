@@ -111,7 +111,17 @@ function initMangaPage()
     for (var i = 0; i < chaptersRead.length; i++) {
         var originalText = chapters[parseInt(chaptersRead[i])].children[0].innerHTML;
         chapters[parseInt(chaptersRead[i])].children[0].innerHTML = "<del>" + originalText + "</del>";
-    } 
+    }
+    
+    /* Cross out manga chapters in the latest chapters section */
+    list = document.getElementById("latestchapters");
+    chapters = list.getElementsByTagName("li");
+    for (var i = 0; i < chapters.length; i++) {
+        var chapterNum = chapters[i].getElementsByTagName("a")[0].innerHTML.replace(title.innerHTML.replace(" Manga", "") + " ", "");
+        if (chaptersRead.indexOf(chapterNum) > -1) {
+            chapters[i].innerHTML = "<del>" + chapters[i].innerHTML + "</del>";
+        }
+    }
 }
 
 /* Mark manga chapter as read */
@@ -199,17 +209,22 @@ function initHomePage()
             /* Get list of chapters */
             latestUpdates = parser.parseFromString(xmlhttp.responseText, "text/html");
             chapters = latestUpdates.getElementsByClassName("updates")[0].getElementsByTagName("tr");
-     
+            var originalTable = table.innerHTML;    
+ 
             /* Display subscribed and updated chapters */
             for (var i = 0; i < chapters.length; i++) {
                 if (-1 != subscribedMangas.indexOf(chapters[i].getElementsByTagName("strong")[0].innerHTML)) {
-                    alert(chapters[i].innerHTML);
                     table.innerHTML += "<tr class\"c3\">" + chapters[i].innerHTML + "</tr>";
                 }
             }            
 
+            /* Check if user even has updates */
+            if (originalTable == table.innerHTML) {
+                table.innerHTML += "No new updates";
+            }        
+
             /* Formatting issues for front page */
-            table.innerHTML = table.innerHTML.replace("class=\"c1\"", "class=\"c2\"");
+            table.innerHTML = table.innerHTML.replace("class=\"c1\"", "class=\"c2\"", 'g');
         }
     }
     xmlhttp.open("GET", "http://www.mangareader.net/latest/", true );
