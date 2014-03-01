@@ -11,9 +11,6 @@
 /* Initialize home page of a manga */
 function initMangaPage() 
 {
-	/* Set background colour */
-	document.body.style.background = "#400080";
-
 	/* Get the division of manga properties */
 	var properties = document.getElementById("mangaproperties");
 	
