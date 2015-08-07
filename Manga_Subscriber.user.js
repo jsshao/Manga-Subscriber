@@ -3,6 +3,7 @@
 // @namespace   Manga Subscriber 
 // @description Allows manga subscription and shows subscribed updates in home page
 // @include     http://www.mangareader.net/*
+// @include     http://www.mangapanda.com/*
 // @grant 	none
 // @version     1
 // ==/UserScript==
@@ -29,6 +30,7 @@ function initMangaPage()
 	if (isSubscribedManga(title.innerHTML.replace(" Manga", ""))) {
 		/* Unsubscribe to manga */
 		button.innerHTML = "UNSUBSCRIBE";
+        button.className = "genretags";
 		button.addEventListener("click", function() 
 			{ 
 				unsubscribeManga(title.innerHTML.replace(" Manga", ""));
@@ -38,6 +40,7 @@ function initMangaPage()
 	else {
 		/* Subscribe to manga */
 		button.innerHTML = "SUBSCRIBE";	
+        button.className = "genretags";
 		button.addEventListener("click", function() 
 			{
 				subscribeManga(title.innerHTML.replace(" Manga", ""));
@@ -45,7 +48,7 @@ function initMangaPage()
 			, false);
 	}
 
-	button.style.fontSize = "xx-large";
+	button.style.fontSize = "x-large";
 	properties.insertBefore(button, title);
 
 	/* Unsubscribe to the manga */
@@ -219,9 +222,6 @@ function initHomePage()
             if (originalTable == table.innerHTML) {
                 table.innerHTML += "No new updates";
             }        
-
-            /* Formatting issues for front page */
-            table.innerHTML = table.innerHTML.replace("class=\"c1\"", "class=\"c2\"", 'g');
         }
     }
     xmlhttp.open("GET", "http://www.mangareader.net/latest/", true );
