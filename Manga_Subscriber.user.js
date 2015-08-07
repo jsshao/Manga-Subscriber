@@ -225,7 +225,7 @@ function initHomePage()
             
              /* Formatting issues for front page */
             if (document.URL.indexOf("mangareader") != -1)
-                table.innerHTML = table.innerHTML.replace("class=\"c1\"", "class=\"c7\"", 'g');
+                table.innerHTML = table.innerHTML.replace(new RegExp('class=\"c1\"', 'g'), 'class=\"c7\"');
         }
     }
     if (document.URL.indexOf("mangareader") != -1) {
