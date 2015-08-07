@@ -214,6 +214,9 @@ function initHomePage()
             /* Display subscribed and updated chapters */
             for (var i = 0; i < chapters.length; i++) {
                 if (-1 != subscribedMangas.indexOf(chapters[i].getElementsByTagName("strong")[0].innerHTML)) {
+                     /* Formatting issues for front page */
+                    if (document.URL.indexOf("mangareader") != -1)
+                        chapters[i].innerHTML = chapters[i].innerHTML.replace(new RegExp('class=\"c1\"', 'g'), 'class=\"c7\"');
                     table.innerHTML += "<tr class\"c3\">" + chapters[i].innerHTML + "</tr>";
                 }
             }            
@@ -222,10 +225,6 @@ function initHomePage()
             if (originalTable == table.innerHTML) {
                 table.innerHTML += "No new updates";
             }        
-            
-             /* Formatting issues for front page */
-            if (document.URL.indexOf("mangareader") != -1)
-                table.innerHTML = table.innerHTML.replace(new RegExp('class=\"c1\"', 'g'), 'class=\"c7\"');
         }
     }
     if (document.URL.indexOf("mangareader") != -1) {
