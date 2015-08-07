@@ -222,9 +222,17 @@ function initHomePage()
             if (originalTable == table.innerHTML) {
                 table.innerHTML += "No new updates";
             }        
+            
+             /* Formatting issues for front page */
+            if (document.URL.indexOf("mangareader") != -1)
+                table.innerHTML = table.innerHTML.replace("class=\"c1\"", "class=\"c7\"", 'g');
         }
     }
-    xmlhttp.open("GET", "http://www.mangareader.net/latest/", true );
+    if (document.URL.indexOf("mangareader") != -1) {
+        xmlhttp.open("get", "http://www.mangareader.net/latest/", true );
+    } else {
+        xmlhttp.open("get", "http://www.mangapanda.com/latest/", true );
+    }
     xmlhttp.send();    
 }
 
