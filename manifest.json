@@ -1,0 +1,16 @@
+{
+  "manifest_version": 2,
+
+  "name": "Manga Subscriber",
+  "description": "This extension allows users to see updates of their subscribed manga series on the homepage. It also includes the functionality of keeping track which chapters have been read.",
+  "version": "1.0",
+  "content_scripts": [
+    {
+      "matches": [
+                  "http://www.mangareader.net/*",
+                  "http://www.mangapanda.com/*"
+      ],
+      "js": ["Manga_Subscriber.user.js"]
+    }
+  ]
+}
