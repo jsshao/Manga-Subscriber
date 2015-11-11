@@ -212,19 +212,37 @@ function initHomePage()
             var originalTable = table.innerHTML;    
  
             /* Display subscribed and updated chapters */
-            for (var i = 0; i < chapters.length; i++) {
-                if (-1 != subscribedMangas.indexOf(chapters[i].getElementsByTagName("strong")[0].innerHTML)) {
-                     /* Formatting issues for front page */
-                    if (document.URL.indexOf("mangareader") != -1)
-                        chapters[i].innerHTML = chapters[i].innerHTML.replace(new RegExp('class=\"c1\"', 'g'), 'class=\"c7\"');
-                    table.innerHTML += "<tr class\"c3\">" + chapters[i].innerHTML + "</tr>";
-                }
-            }            
+            if (subscribedMangas != null) {
+                for (var i = 0; i < chapters.length; i++) {
+                    if (-1 != subscribedMangas.indexOf(chapters[i].getElementsByTagName("strong")[0].innerHTML)) {
+                         /* Formatting issues for front page */
+                        if (document.URL.indexOf("mangareader") != -1)
+                            chapters[i].innerHTML = chapters[i].innerHTML.replace(new RegExp('class=\"c1\"', 'g'), 'class=\"c7\"');
+                        table.innerHTML += "<tr class\"c3\">" + chapters[i].innerHTML + "</tr>";
+                    }
+                }            
+            }
 
             /* Check if user even has updates */
             if (originalTable == table.innerHTML) {
                 table.innerHTML += "No new updates";
             }        
+        
+            var allChapters = document.getElementsByClassName("chapter");
+            for (var i = 0; i < allChapters.length; i++) {
+                var name = allChapters[i].getElementsByTagName("strong")[0].innerHTML;
+                var chaptersRead = JSON.parse(localStorage.getItem(name));
+                var children = allChapters[i].parentNode.getElementsByClassName("chaptersrec");
+                if (chaptersRead == null || children == null)
+                    continue;
+
+                for (var j = 0; j < children.length; j++) {
+                    var chapterNum = children[j].innerHTML.replace(name + " ", "");
+                    if (chaptersRead.indexOf(chapterNum) != -1) {
+                        children[j].innerHTML = "<del>" + children[j].innerHTML + "<del>";
+                    }
+                }
+            }
         }
     }
     if (document.URL.indexOf("mangareader") != -1) {
